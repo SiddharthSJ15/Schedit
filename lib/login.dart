@@ -1,5 +1,8 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:schedit/sign_up.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,6 +12,34 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _saveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', _emailController.text);
+    await prefs.setString('mobile', _mobileController.text);
+  }
+
+  String selectedCountryCode = '+91';
+
+  bool _passwordVisible = false;
+  bool _textFormField = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _textFormField = false;
+    _passwordVisible = false;
+    _textFormField = false;
+  }
+
+  void signup() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+  }
+
   bool? value = false;
   @override
   Widget build(BuildContext context) {
@@ -28,225 +59,338 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
+      
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Login Account',
-                    style: GoogleFonts.notoSansAdlamUnjoined(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: Color.fromARGB(255, 75, 101, 243),
-                    ),
-                  ),
-                ],
-              ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome Back!',
-                    style: GoogleFonts.notoSansAdlamUnjoined(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 30),
-
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Email Address',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Mobile Number?',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w600,
-                          color: Color.fromARGB(255, 75, 101, 243),
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Enter email address',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 10),
-
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Password',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Create password',
-                      border: OutlineInputBorder(),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye_outlined,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Login Account',
+                      style: GoogleFonts.notoSansAdlamUnjoined(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
                         color: Color.fromARGB(255, 75, 101, 243),
                       ),
                     ),
-                  ),
-                ],
-              ),
-
-              SizedBox(height: 5),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
-                      color: Color.fromARGB(255, 75, 101, 243),
-                    ),
-                  ),
-                ],
-              ),
-
-              // SizedBox(height: 2),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    activeColor: Color.fromARGB(255, 75, 101, 243),
-                    value: value,
-                    visualDensity: VisualDensity(horizontal: -4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    onChanged: (bool? newValue) {
-                      setState(() {
-                        value = newValue;
-                      });
-                    },
-                  ),
-                  Text('Keep me logged in'),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  backgroundColor: Color.fromARGB(255, 75, 101, 243),
-                  foregroundColor: Color.fromARGB(255, 75, 101, 243),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  minimumSize: Size(double.infinity, 60),
+                  ],
                 ),
-                child: Text('Sign Up', style: TextStyle(color: Colors.white)),
-              ),
 
-              SizedBox(height: 20),
-
-              Row(
-                children: [
-                  Expanded(child: Divider()),
-                  SizedBox(width: 10),
-
-                  Text('or sign in with',style: TextStyle(color: Colors.grey),),
-
-                  SizedBox(width: 10),
-                  Expanded(child: Divider()),
-                ],
-              ),
-
-              SizedBox(height: 20),
-
-              Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 226, 233, 252),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Welcome Back!',
+                      style: GoogleFonts.notoSansAdlamUnjoined(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Row(
+                  ],
+                ),
+
+                SizedBox(height: 30),
+
+                _textFormField
+                    ? Column(
                       children: [
-                        Image.asset('assets/google.png', width: 30),
-                        SizedBox(width: 10),
-                        Text('Continue With Apple')
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Mobile Number',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _textFormField = !_textFormField;
+                                });
+                              },
+                              child: Text(
+                                'Email Address?',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 75, 101, 243),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 55,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade600),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: CountryCodePicker(
+                                onChanged: (country) {
+                                  setState(() {
+                                    selectedCountryCode = country.dialCode!;
+                                  });
+                                },
+                                searchDecoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                initialSelection: 'IN',
+                                showFlag: true,
+                                showDropDownButton: false,
+                                flagWidth: 30,
+                                padding: EdgeInsets.zero,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _mobileController,
+                                decoration: InputDecoration(
+                                  hintText: 'Enter mobile number',
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 75, 101, 243),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                    : Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Email Address',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _textFormField = !_textFormField;
+                                });
+                              },
+                              child: Text(
+                                'Mobile Number?',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 75, 101, 243),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            hintText: 'Enter email address',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
                       ],
                     ),
-                  ),
 
-                  SizedBox(height: 10,),
+                SizedBox(height: 10),
 
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 226, 233, 252),
-                    ),
-                    child: Row(
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Image.asset('assets/apple.png', width: 30),
-                        SizedBox(width: 10),
-                        Text('Continue With Apple')
+                        Text(
+                          'Password',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
-                  ),
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      controller: _passwordController,
+                      obscureText: !_passwordVisible,
+                      decoration: InputDecoration(
+                        hintText: 'Enter password',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility_off_outlined
+                                : Icons.remove_red_eye_outlined,
+                            color: Color.fromARGB(255, 75, 101, 243),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-                  SizedBox(height: 10,),
+                SizedBox(height: 5),
 
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 10,
+                          color: Color.fromARGB(255, 75, 101, 243),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
+                // SizedBox(height: 2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      activeColor: Color.fromARGB(255, 75, 101, 243),
+                      value: value,
+                      visualDensity: VisualDensity(horizontal: -4),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      onChanged: (bool? newValue) {
+                        setState(() {
+                          value = newValue;
+                        });
+                      },
+                    ),
+                    Text('Keep me logged in'),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    backgroundColor: Color.fromARGB(255, 75, 101, 243),
+                    foregroundColor: Color.fromARGB(255, 75, 101, 243),
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color.fromARGB(255, 226, 233, 252),
                     ),
-                    child: Row(
-                      children: [
-                        Image.asset('assets/facebook.png', width: 30),
-                        SizedBox(width: 10),
-                        Text('Continue With Facebook')
-                      ],
+                    minimumSize: Size(double.infinity, 60),
+                  ),
+                  child: Text('Sign Up', style: TextStyle(color: Colors.white)),
+                ),
+
+                SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    Expanded(child: Divider()),
+                    SizedBox(width: 10),
+
+                    Text(
+                      'or sign in with',
+                      style: TextStyle(color: Colors.grey),
                     ),
-                  ),
-                ],
-              ),
 
-              SizedBox(height: 20),
+                    SizedBox(width: 10),
+                    Expanded(child: Divider()),
+                  ],
+                ),
 
-              Row(
-                children: [
-                  Text('Dont have an account? '),
-                  Text(
-                    'Sign Up',
-                    style: TextStyle(color: Color.fromARGB(255, 75, 101, 243)),
-                  ),
-                ],
-              ),
-            ],
+                SizedBox(height: 20),
+
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromARGB(255, 226, 233, 252),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/google.png', width: 30),
+                          SizedBox(width: 10),
+                          Text('Continue With Apple'),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromARGB(255, 226, 233, 252),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/apple.png', width: 30),
+                          SizedBox(width: 10),
+                          Text('Continue With Apple'),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 10),
+
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromARGB(255, 226, 233, 252),
+                      ),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/facebook.png', width: 30),
+                          SizedBox(width: 10),
+                          Text('Continue With Facebook'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                SizedBox(height: 20),
+
+                Row(
+                  children: [
+                    Text("Don't have an account? "),
+                    GestureDetector(
+                      onTap: signup,
+                      child: GestureDetector(
+                        onTap: signup,
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 75, 101, 243),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
