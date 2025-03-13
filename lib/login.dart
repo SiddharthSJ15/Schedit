@@ -1,6 +1,8 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:schedit/acount_succes.dart';
+import 'package:schedit/forgot_password.dart';
 import 'package:schedit/sign_up.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,10 +19,24 @@ class _LoginState extends State<Login> {
   TextEditingController _mobileController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _saveUserData() async {
+  Future<void> loginData() async {
+    String? email = _emailController.text.trim();
+    String? password = _passwordController.text.trim();
+    String? mobile = _mobileController.text.trim();
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', _emailController.text);
-    await prefs.setString('mobile', _mobileController.text);
+
+    String? savedEmail = prefs.getString('email');
+    String? savedPassword = prefs.getString('password');
+    String? savedMobile = prefs.getString('mobile');
+    if (_formKey.currentState!.validate() &&
+        (savedEmail == email || savedMobile == mobile) &&
+        savedPassword == password) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => AccountCreated()),
+      );
+    }
   }
 
   String selectedCountryCode = '+91';
@@ -38,6 +54,13 @@ class _LoginState extends State<Login> {
 
   void signup() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+  }
+
+  void forgotPassword() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ForgotPassword()),
+    );
   }
 
   bool? value = false;
@@ -59,7 +82,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-      
+
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
@@ -72,7 +95,7 @@ class _LoginState extends State<Login> {
                   children: [
                     Text(
                       'Login Account',
-                      style: GoogleFonts.notoSansAdlamUnjoined(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
                         color: Color.fromARGB(255, 75, 101, 243),
@@ -251,7 +274,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: forgotPassword,
                       child: Text(
                         'Forgot Password?',
                         style: TextStyle(
@@ -285,7 +308,7 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: loginData,
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: Color.fromARGB(255, 75, 101, 243),

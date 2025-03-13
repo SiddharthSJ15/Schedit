@@ -13,17 +13,23 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _mobileController = TextEditingController();
+  TextEditingController? _emailController = TextEditingController();
+  TextEditingController? _mobileController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPswdController = TextEditingController();
 
   Future<void> _submit() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        _passwordController.text == _confirmPswdController.text) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('email', _emailController.text);
-      await prefs.setString('mobile', _mobileController.text);
+      await prefs.setString('email', _emailController!.text);
+      await prefs.setString('mobile', _mobileController!.text);
       await prefs.setString('password', _passwordController.text);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Invalid ID or Password')));
     }
   }
 
@@ -77,7 +83,7 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     Text(
                       'Create Account',
-                      style: GoogleFonts.notoSansAdlamUnjoined(
+                      style: GoogleFonts.inter(
                         fontWeight: FontWeight.bold,
                         fontSize: 30,
                         color: Color.fromARGB(255, 75, 101, 243),
@@ -162,12 +168,6 @@ class _SignUpState extends State<SignUp> {
                                 controller: _mobileController,
                                 decoration: InputDecoration(
                                   hintText: 'Enter mobile number',
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 75, 101, 243),
-                                      width: 2,
-                                    ),
-                                  ),
                                   border: OutlineInputBorder(),
                                 ),
                               ),
@@ -289,6 +289,8 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
 
+                SizedBox(height: 5),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -313,8 +315,10 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
 
+                SizedBox(height: 5),
+
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: _submit,
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     shape: RoundedRectangleBorder(
@@ -362,7 +366,7 @@ class _SignUpState extends State<SignUp> {
                   ],
                 ),
 
-                SizedBox(height: 30),
+                SizedBox(height: 40),
 
                 Row(
                   children: [
