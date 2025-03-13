@@ -17,7 +17,20 @@ class MyApp extends StatelessWidget {
         buttonTheme: ButtonThemeData(
           buttonColor: Color.fromARGB(255, 75, 101, 243),
         ),
-                
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                                      color: Colors.grey.shade600,
+                                      width: 1,
+                                    ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 75, 101, 243),
+                                      width: 2,
+                                    ),
+          )
+        ),        
         colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 75, 101, 243)),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
