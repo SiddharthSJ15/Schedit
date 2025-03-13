@@ -13,9 +13,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Schedit',
+      theme: ThemeData(
+        buttonTheme: ButtonThemeData(
+          buttonColor: Color.fromARGB(255, 75, 101, 243),
+        ),
+                
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 75, 101, 243)),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 75, 101, 243),
+            foregroundColor: Color.fromARGB(255, 75, 101, 243),
+          ),
+
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
     );
   }
 }
-

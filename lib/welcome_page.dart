@@ -12,17 +12,11 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage> {
   void signup() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SignUp()),
-    );
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
   }
 
-  void login(){
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Login()),
-    );
+  void login() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
   }
 
   @override
@@ -66,15 +60,15 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ],
               ),
-        
+
               SizedBox(height: 60),
-        
+
               Image.asset('assets/tree_logo.png'),
-        
+
               SizedBox(height: 30),
-        
+
               Image.asset('assets/schedit_blue.png', width: 150),
-        
+
               Padding(
                 padding: EdgeInsets.fromLTRB(60, 5, 60, 5),
                 child: Text(
@@ -83,15 +77,15 @@ class _WelcomePageState extends State<WelcomePage> {
                   textAlign: TextAlign.center,
                 ),
               ),
-        
+
               SizedBox(height: 30),
-        
+
               ElevatedButton(
                 onPressed: signup,
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: Color.fromARGB(255, 75, 101, 243),
-                  foregroundColor: Color.fromARGB(255, 75, 101, 243),
+                  // backgroundColor: Color.fromARGB(255, 75, 101, 243),
+                  // foregroundColor: Color.fromARGB(255, 75, 101, 243),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -106,9 +100,9 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
               ),
-        
+
               SizedBox(height: 10),
-        
+
               ElevatedButton(
                 onPressed: login,
                 style: ElevatedButton.styleFrom(
